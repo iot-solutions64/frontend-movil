@@ -73,13 +73,17 @@ class LoginPage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {
-                      final String username = _usernameController.text;
-                      final String password = _passwordController.text;
-                      context.read<LoginBloc>().add(LoginSubmitted(
-                          username: username, password: password));
-                    },
-                    child: const Text('Acceder')),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xB43B82F6), // Color de fondo del botón
+                    foregroundColor: Colors.white, // Color del texto
+                  ),
+                  onPressed: () {
+                    final String username = _usernameController.text;
+                    final String password = _passwordController.text;
+                    context.read<LoginBloc>().add(LoginSubmitted(
+                        username: username, password: password));
+                  },
+                  child: const Text('Acceder')),
               ),
             ),
             GestureDetector(

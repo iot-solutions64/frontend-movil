@@ -90,21 +90,25 @@ class SignupPage extends StatelessWidget {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () {
-                          final String username = _usernameController.text;
-                          final String password = _passwordController.text;
-                          final String confirmPassword = _confirmPasswordController.text;
-                          if (password != confirmPassword) {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text('Las contraseñas no coinciden'),
-                              backgroundColor: Colors.red,
-                            ));
-                            return;
-                          }
-                          context.read<RegisterBloc>().add(RegisterSubmitted(
-                            username: username, password: password));
-                        },
-                        child: const Text('Registrar')),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xB43B82F6), // Color de fondo del botón
+                        foregroundColor: Colors.white, // Color del texto
+                      ),
+                      onPressed: () {
+                        final String username = _usernameController.text;
+                        final String password = _passwordController.text;
+                        final String confirmPassword = _confirmPasswordController.text;
+                        if (password != confirmPassword) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text('Las contraseñas no coinciden'),
+                            backgroundColor: Colors.red,
+                          ));
+                          return;
+                        }
+                        context.read<RegisterBloc>().add(RegisterSubmitted(
+                          username: username, password: password));
+                      },
+                      child: const Text('Registrar')),
                   ),
                 ),
                 GestureDetector(
