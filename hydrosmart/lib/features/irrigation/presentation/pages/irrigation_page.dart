@@ -12,7 +12,15 @@ class _IrrigationPageState extends State<IrrigationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Irrigation Page'),
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text(
+            'Irrigation Page',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: Text(

@@ -12,7 +12,15 @@ class _SoilPageState extends State<SoilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Soil Page'),
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text(
+            'Soil Page',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: Text(

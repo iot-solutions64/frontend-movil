@@ -12,7 +12,15 @@ class _SystemPageState extends State<SystemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('System Page'),
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text(
+            'System Page',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: Text(
