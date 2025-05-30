@@ -8,6 +8,8 @@ import 'package:hydrosmart/features/security/presentation/bloc/register_bloc.dar
 import 'package:hydrosmart/features/security/presentation/pages/login_page.dart';
 import 'package:hydrosmart/features/security/presentation/pages/signup_page.dart';
 import 'package:hydrosmart/features/soil/presentation/pages/crop_detail_page.dart';
+import 'package:hydrosmart/features/soil/presentation/pages/crop_history_page.dart';
+import 'package:hydrosmart/features/soil/presentation/pages/recommended_actions_page.dart';
 import 'package:hydrosmart/shared/presentation/pages/home_page.dart';
 
 void main() async {
@@ -44,6 +46,15 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (context) => CropDetailPage(),
                 settings: RouteSettings(arguments: crop),
+              );
+            }
+          }
+          if (settings.name == '/crop_history') {
+            final args = settings.arguments;
+            if (args is Map && args['cropId'] is int) {
+              return MaterialPageRoute(
+                builder: (context) => CropHistoryPage(),
+                settings: RouteSettings(arguments: args),
               );
             }
           }

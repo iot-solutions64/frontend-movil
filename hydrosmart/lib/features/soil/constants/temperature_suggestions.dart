@@ -46,7 +46,7 @@ Map<String, Map<String, dynamic>> TEMPERATURE_SUGGESTIONS = {
   },
   'BURNING': {
     'id': 6,
-    'title': "Muy alta (riesgo de incendio)",
+    'title': "Incendio",
     'message': "El suelo está en llamas. Mantenga la calma e intente apagar el fuego. Es posible que los cultivos se hayan perdido.",
     'videos': <Video>[
       Video(title: "#ConQuitoTips: ¿Qué hacer con los cultivos durante los incendios?", url: "https://youtube.com/shorts/-JK3s4u7RhM?si=l0HoAHlA8wwO369H"),
@@ -56,7 +56,7 @@ Map<String, Map<String, dynamic>> TEMPERATURE_SUGGESTIONS = {
   },
   'FREEZING': {
     'id': 7,
-    'title': "Muy baja (riesgo de congelación)",
+    'title': "Congelación",
     'message': "El suelo está muy por debajo de lo adecuado. Intente exponer los cultivos más al sol y regar con agua tibia para nivelar la temperatura.",
     'videos': <Video>[
       Video(title: "Condiciones del clima en BAJAS TEMPERATURAS (Heladas, Niebla, humedad relativa)", url: "https://youtu.be/m8nOYBGoDOk?si=zIbyiB-RI3CtFzwO"),

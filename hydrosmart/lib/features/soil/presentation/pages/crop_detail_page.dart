@@ -14,9 +14,8 @@ class CropDetailPage extends StatefulWidget {
 }
 
 class _CropDetailPageState extends State<CropDetailPage> {
-  // Reactive data equivalent to Vue's ref()
-  Crop? cultivo; // Use late as it will be initialized in didChangeDependencies
-  late int _cropId; // Use late as it will be initialized in initState
+  Crop? cultivo;
+  late int _cropId;
   Temperature _temperature = Temperature();
   Humidity _humidity = Humidity();
   bool _initialized = false;
@@ -45,7 +44,6 @@ class _CropDetailPageState extends State<CropDetailPage> {
   void initState() {
     super.initState();
 
-    // Equivalent to Vue's onMounted logic:
     // TODO: Implement the logic to fetch temperature & humidity data from a service
     // For now, hardcode data similar to your Vue example
     _humidity = Humidity(id: 1, humidity: 70, minThreshold: 60, maxThreshold: 30, status: "FAVORABLE");
@@ -66,11 +64,11 @@ class _CropDetailPageState extends State<CropDetailPage> {
   }
 
   void _goToShortHistory() {
-    Navigator.of(context).pushNamed('/crop-short-history', arguments: _cropId);
+    Navigator.of(context).pushNamed('/crop_history', arguments: {'cropId': _cropId, 'short': true});
   }
 
   void _goToCompleteHistory() {
-    Navigator.of(context).pushNamed('/crop-complete-history', arguments: _cropId);
+    Navigator.of(context).pushNamed('/crop_history', arguments: {'cropId': _cropId, 'short': false});
   }
 
   // Helper function for system info buttons (retained)
