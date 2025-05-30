@@ -7,6 +7,7 @@ import 'package:hydrosmart/features/security/presentation/bloc/login_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/register_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/pages/login_page.dart';
 import 'package:hydrosmart/features/security/presentation/pages/signup_page.dart';
+import 'package:hydrosmart/features/soil/presentation/pages/crop_detail_page.dart';
 import 'package:hydrosmart/shared/presentation/pages/home_page.dart';
 
 void main() async {
@@ -35,6 +36,19 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginPage(),
           '/signup': (context) => SignupPage(),
           '/home': (context) => const HomePage(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == '/crop_detail') {
+            final crop = settings.arguments;
+            if (crop != null) {
+              return MaterialPageRoute(
+                builder: (context) => CropDetailPage(),
+                settings: RouteSettings(arguments: crop),
+              );
+            }
+          }
+          // fallback
+          return null;
         },
       ),
     );
