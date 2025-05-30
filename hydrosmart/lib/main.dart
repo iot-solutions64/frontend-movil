@@ -58,6 +58,15 @@ class MyApp extends StatelessWidget {
               );
             }
           }
+          if (settings.name == '/recommended_actions') {
+            final args = settings.arguments;
+            if (args is Map && args['id'] is int && args['isHumidity'] is bool) {
+              return MaterialPageRoute(
+                builder: (context) => RecommendedActionsPage(),
+                settings: RouteSettings(arguments: args),
+              );
+            }
+          }
           // fallback
           return null;
         },

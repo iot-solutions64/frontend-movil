@@ -56,11 +56,11 @@ class _CropDetailPageState extends State<CropDetailPage> {
   }
 
   void _goToTemperatureActions(int temperatureId) {
-    Navigator.of(context).pushNamed('/temperature-actions', arguments: temperatureId);
+    Navigator.of(context).pushNamed('/recommended_actions', arguments: {'id': temperatureId, 'isHumidity': false});
   }
 
   void _goToHumidityActions(int humidityId) {
-    Navigator.of(context).pushNamed('/humidity-actions', arguments: humidityId);
+    Navigator.of(context).pushNamed('/recommended_actions', arguments: {'id': humidityId, 'isHumidity': true});
   }
 
   void _goToShortHistory() {
