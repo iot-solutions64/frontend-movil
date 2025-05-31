@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hydrosmart/features/soil/domain/record.dart';
 import 'package:hydrosmart/features/soil/constants/humidity_suggestions.dart';
 import 'package:hydrosmart/features/soil/constants/temperature_suggestions.dart';
-import 'package:collection/collection.dart';
 
 class CropHistoryPage extends StatefulWidget {
   const CropHistoryPage({super.key});
