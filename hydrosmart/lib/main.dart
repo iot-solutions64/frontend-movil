@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrosmart/core/resource.dart';
 import 'package:hydrosmart/features/irrigation/presentation/pages/tanks_page.dart';
+import 'package:hydrosmart/features/irrigation/presentation/pages/water_graph_page.dart';
 import 'package:hydrosmart/features/security/data/local/user_model.dart';
 import 'package:hydrosmart/features/security/data/repository/security_repository.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_bloc.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           '/signup': (context) => SignupPage(),
           '/home': (context) => const HomePage(),
           '/tanks': (context) => const TanksPage(),
+          '/water_graph': (context) => const WaterGraphPage(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/crop_detail') {

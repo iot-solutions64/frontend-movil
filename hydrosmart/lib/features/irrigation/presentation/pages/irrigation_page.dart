@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
-
-class MonthlyWaterUsage {
-  final String mes; // Month
-  final int cantidad; // Quantity of water used in Liters
-
-  MonthlyWaterUsage({
-    required this.mes,
-    required this.cantidad,
-  });
-}
+import 'package:hydrosmart/features/irrigation/domain/monthly_water_usage.dart';
 
 class IrrigationPage extends StatefulWidget {
   const IrrigationPage({super.key});
@@ -50,7 +41,7 @@ class _IrrigationPageState extends State<IrrigationPage> {
   }
 
   void _gotToWaterGraph() {
-    // Navigator.of(context).pushNamed('/water_graph');
+    Navigator.of(context).pushNamed('/water_graph');
   }
 
   @override
