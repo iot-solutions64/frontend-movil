@@ -107,9 +107,13 @@ class SignupPage extends StatelessWidget {
                         final String password = _passwordController.text;
                         final String confirmPassword = _confirmPasswordController.text;
                         if (password != confirmPassword) {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text('Las contraseñas no coinciden'),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text('Las contraseñas no coinciden'),
                             backgroundColor: Colors.red,
+                            duration: const Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            margin: const EdgeInsets.all(16)
                           ));
                           return;
                         }
