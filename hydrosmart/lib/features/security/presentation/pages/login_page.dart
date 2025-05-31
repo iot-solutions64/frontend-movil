@@ -20,9 +20,13 @@ class LoginPage extends StatelessWidget {
           if (state is LoginSuccess) {
             Navigator.pushNamed(context, '/home');
           } else if (state is LoginError) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Credenciales incorrectas'),
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Credenciales incorrectas'),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              margin: const EdgeInsets.all(16),
             ));
           }
         },
