@@ -45,7 +45,7 @@ class _SoilPageState extends State<SoilPage> {
     }
   }
   
-    void _showAddDialog() {
+  void _showAddDialog() {
     final nombreController = TextEditingController();
     final cantidadController = TextEditingController();
     String selectedTanque = tanques[0];
@@ -277,11 +277,10 @@ class _SoilPageState extends State<SoilPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 16),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,

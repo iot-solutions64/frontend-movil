@@ -261,9 +261,17 @@ class _CropDetailPageState extends State<CropDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Información de los sensores',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Información de los sensores',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
 
@@ -297,11 +305,19 @@ class _CropDetailPageState extends State<CropDetailPage> {
             ),
             const SizedBox(height: 32),
 
-            const Text(
-              'Información del sistema',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Información del sistema',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
+            
             const SizedBox(height: 16),
 
             GridView.count(

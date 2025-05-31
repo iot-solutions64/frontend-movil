@@ -31,9 +31,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.grass), label: 'Soil'),
-          BottomNavigationBarItem(icon: Icon(Icons.water_drop), label: 'Irrigation'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'System'),
+          BottomNavigationBarItem(icon: Icon(Icons.grass), label: 'Cultivo'),
+          BottomNavigationBarItem(icon: Icon(Icons.water_drop), label: 'Agua'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Sistema'),
           BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
         ],
         currentIndex: _index,

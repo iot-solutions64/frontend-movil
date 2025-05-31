@@ -18,15 +18,23 @@ class SignupPage extends StatelessWidget {
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (BuildContext context, state) {
           if (state is RegisterSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Cuenta creada con éxito, inicia sesión'),
+            ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+              content: const Text('Cuenta creada con éxito, inicia sesión'),
               backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              margin: const EdgeInsets.all(16),
             ));
             Navigator.pushNamed(context, '/login');
           } else if (state is RegisterError) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Error al registrar usuario'),
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Error al registrar usuario'),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              margin: const EdgeInsets.all(16)
             ));
           }
         },
@@ -99,9 +107,13 @@ class SignupPage extends StatelessWidget {
                         final String password = _passwordController.text;
                         final String confirmPassword = _confirmPasswordController.text;
                         if (password != confirmPassword) {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text('Las contraseñas no coinciden'),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text('Las contraseñas no coinciden'),
                             backgroundColor: Colors.red,
+                            duration: const Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            margin: const EdgeInsets.all(16)
                           ));
                           return;
                         }
