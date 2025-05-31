@@ -264,6 +264,7 @@ class _SoilPageState extends State<SoilPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -281,7 +282,8 @@ class _SoilPageState extends State<SoilPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
+            SizedBox(
+              height: screenHeight * 0.74,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
@@ -342,23 +344,17 @@ class _SoilPageState extends State<SoilPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF092C4C),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.add, color: Colors.white),
-                  tooltip: 'Añadir',
-                  onPressed: _showAddDialog,
-                ),
-              ),
-            ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFF092C4C),
+        onPressed: _showAddDialog,
+        tooltip: 'Añadir',
+        child: const Icon(Icons.add, color: Colors.white),
+        shape: const CircleBorder(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
