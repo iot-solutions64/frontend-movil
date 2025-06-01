@@ -94,7 +94,7 @@ List<System> _systems = [];
   }
 
   void _goToSystemDetails(int id) {
-    //Navigator.of(context).pushNamed('/systems_details', arguments: id);
+    Navigator.of(context).pushNamed('/system_detail', arguments: id);
   }
 
   void _goToAddSystem() {
