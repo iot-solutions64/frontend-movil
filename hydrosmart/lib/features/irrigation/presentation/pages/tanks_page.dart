@@ -290,7 +290,7 @@ class _TanksPageState extends State<TanksPage> {
         title: const Text(
           'Tanques',
           style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -307,33 +307,23 @@ class _TanksPageState extends State<TanksPage> {
                         final tank = _tanks[index];
                         return TankCard(
                           tank: tank,
-                          onEdit: _showEditTankDialog, // Call the dialog function directly
-                          onDelete: _showDeleteTankDialog, // Call the dialog function directly
+                          onEdit: _showEditTankDialog,
+                          onDelete: _showDeleteTankDialog,
                         );
                       },
                     ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 12.0), // <-- Margen inferior
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF092C4C),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    tooltip: 'Añadir',
-                    onPressed: _showAddTankDialog,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
-        
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xFF092C4C),
+        onPressed: _showAddTankDialog,
+        tooltip: 'Añadir',
+        child: const Icon(Icons.add, color: Colors.white),
+        shape: const CircleBorder(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
