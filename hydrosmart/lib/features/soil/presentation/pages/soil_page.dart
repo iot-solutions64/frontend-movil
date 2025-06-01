@@ -95,6 +95,8 @@ class _SoilPageState extends State<SoilPage> {
                         riegoAutomatico = value ?? false;
                       });
                     },
+                    activeColor: Colors.blue,
+                    checkColor: Colors.white,
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
@@ -186,6 +188,8 @@ class _SoilPageState extends State<SoilPage> {
                         riegoAutomatico = value ?? false;
                       });
                     },
+                    activeColor: Colors.blue,
+                    checkColor: Colors.white,
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
@@ -318,6 +322,8 @@ class _SoilPageState extends State<SoilPage> {
                                 }
                               });
                             },
+                            activeColor: Colors.blue,
+                            checkColor: Colors.white,
                           ),
                         ),
                         DataCell(Row(

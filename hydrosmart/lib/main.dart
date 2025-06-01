@@ -12,7 +12,10 @@ import 'package:hydrosmart/features/security/presentation/pages/signup_page.dart
 import 'package:hydrosmart/features/soil/presentation/pages/crop_detail_page.dart';
 import 'package:hydrosmart/features/soil/presentation/pages/crop_history_page.dart';
 import 'package:hydrosmart/features/soil/presentation/pages/recommended_actions_page.dart';
+import 'package:hydrosmart/features/system/domain/system.dart';
+import 'package:hydrosmart/features/system/presentation/pages/add_system_page.dart';
 import 'package:hydrosmart/features/system/presentation/pages/system_detail_page.dart';
+import 'package:hydrosmart/features/system/presentation/pages/system_edit_page.dart';
 import 'package:hydrosmart/shared/presentation/pages/home_page.dart';
 
 void main() async {
@@ -43,6 +46,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomePage(),
           '/tanks': (context) => const TanksPage(),
           '/water_graph': (context) => const WaterGraphPage(),
+          '/add_system': (context) => AddSystemPage(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/crop_detail') {
@@ -73,11 +77,20 @@ class MyApp extends StatelessWidget {
             }
           }
           if (settings.name == '/system_detail') {
-            final systemId = settings.arguments;
-            if (systemId is int) {
+            final system = settings.arguments;
+            if (system is System) {
               return MaterialPageRoute(
-                builder: (context) => SystemDetailPage(systemId: systemId),
-                settings: RouteSettings(arguments: systemId),
+                builder: (context) => SystemDetailPage(system: system),
+                settings: RouteSettings(arguments: system),
+              );
+            }
+          }
+          if (settings.name == '/system_edit') {
+            final system = settings.arguments;
+            if (system is System) {
+              return MaterialPageRoute(
+                builder: (context) => SystemEditPage(system: system),
+                settings: RouteSettings(arguments: system),
               );
             }
           }

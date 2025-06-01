@@ -4,9 +4,9 @@ import 'package:hydrosmart/features/system/domain/system.dart';
 
 
 class SystemDetailPage extends StatefulWidget {
-  final int systemId;
+  final System? system;
 
-  const SystemDetailPage({super.key, required this.systemId});
+  const SystemDetailPage({super.key, required this.system});
 
   @override
   State<SystemDetailPage> createState() => _SystemDetailPageState();
@@ -18,24 +18,27 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
   @override
   void initState() {
     super.initState();
-    _fetchSystemDetails(widget.systemId);
+    _fetchSystemDetails(widget.system!);
   }
 
-  void _fetchSystemDetails(int id) {
+  void _fetchSystemDetails(System system) {
     // TODO: Implementar la lógica para obtener datos del sistema desde un servicio
     // Aquí simulamos la carga de datos con los valores de ejemplo
     setState(() {
       _system = System(
-        id: id,
-        name: "Sistema de zanahorias",
-        cropId: 1,
-        batteryLevel: 70,
-        subsystems: [
-          Subsystem(id: 1, name: "Regado automatico", value: null, status: "Normal", active: true),
-          Subsystem(id: 2, name: "Temperatura", value: 22.0, status: "Normal", active: true),
-          Subsystem(id: 3, name: "Humedad", value: 50.0, status: "Normal", active: false),
-          Subsystem(id: 4, name: "Cantidad de agua", value: 1000.0, status: "Insuficiente", active: false),
-        ],
+        id: system.id,
+        name: system.name,
+        cropId: system.cropId,
+        batteryLevel: system.batteryLevel,
+        subsystems: system.subsystems.map((sub) {
+          return Subsystem(
+            id: sub.id,
+            name: sub.name,
+            value: sub.value,
+            status: sub.status,
+            active: sub.active,
+          );
+        }).toList(),
       );
     });
   }
@@ -52,9 +55,43 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
     Navigator.of(context).pop();
   }
 
-  void _goToEditSystem(int id) {
-    //Navigator.of(context).pushNamed('/systems/${id}/edit');
+  void _goToEditSystem() {
+    Navigator.pushNamed(context, '/system_edit', arguments: _system);
   }
+
+      void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Eliminar Sistema'),
+          content: Text('¿Seguro que deseas eliminar #${_system.id} "${_system.name}"?'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF212121),
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF84343),
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                // To Do: logica para eliminar el sistema
+                Navigator.pop(context);
+                Navigator.of(context).pop(); 
+              },
+              child: const Text('Eliminar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +99,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(), // router.back()
+          onPressed: () => Navigator.of(context).pop(),
           tooltip: 'Volver',
         ),
         title: Text(
@@ -207,7 +244,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                                     child: Checkbox(
                                       value: sub.active,
                                       onChanged: null,
-                                      activeColor: Colors.grey,
+                                      activeColor: Colors.blue,
                                       checkColor: Colors.white,
                                     ),
                                   ),
@@ -230,7 +267,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                         SizedBox(
                           width: 160, // w-10rem
                           child: ElevatedButton(
-                            onPressed: () => _goToEditSystem(_system.id),
+                            onPressed: () => _goToEditSystem(),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF1856C3),
                               foregroundColor: Colors.white,
@@ -246,7 +283,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                         SizedBox(
                           width: 160,
                           child: ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: _showDeleteDialog,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                               foregroundColor: Colors.white,

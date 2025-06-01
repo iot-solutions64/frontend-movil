@@ -93,12 +93,12 @@ List<System> _systems = [];
     return const Color(0xFFE74C3C); // Red
   }
 
-  void _goToSystemDetails(int id) {
-    Navigator.of(context).pushNamed('/system_detail', arguments: id);
+  void _goToSystemDetails(System system) {
+    Navigator.of(context).pushNamed('/system_detail', arguments: system);
   }
 
   void _goToAddSystem() {
-    //Navigator.of(context).pushNamed('/add_system');
+    Navigator.of(context).pushNamed('/add_system');
   }
 
   @override
@@ -184,7 +184,7 @@ List<System> _systems = [];
                               SizedBox(
                                 width: 160,
                                 child: ElevatedButton.icon(
-                                  onPressed: () => _goToSystemDetails(system.id),
+                                  onPressed: () => _goToSystemDetails(system),
                                   label: const Text('Ver sistema'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1856C3),
