@@ -3,6 +3,8 @@ class AppConstants {
 
   static const String signUpEndpoint = '/authentication/sign-up';
   static const String signInEndpoint = '/authentication/sign-in';
+  static const String waterTankEndpoint = '/water-tanks';
+  static const String cropEndpoint = '/crop';
 
 
   static const String logo = 'https://i.postimg.cc/V6rkqJZd/hydrosmart-logo-transparent.png';

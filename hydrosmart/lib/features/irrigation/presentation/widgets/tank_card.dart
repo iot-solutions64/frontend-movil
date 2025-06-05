@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hydrosmart/features/irrigation/domain/tank.dart';
+import 'package:hydrosmart/features/irrigation/domain/water_tank.dart';
 
 class TankCard extends StatelessWidget {
-  final Tank tank;
-  final ValueChanged<Tank> onEdit;
-  final ValueChanged<Tank> onDelete;
+  final WaterTank tank;
+  final ValueChanged<WaterTank> onEdit;
+  final ValueChanged<WaterTank> onDelete;
 
   const TankCard({
     super.key,
