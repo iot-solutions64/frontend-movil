@@ -113,6 +113,7 @@ class _CropHistoryPageState extends State<CropHistoryPage> {
         ),
         title: Text(
           _isShortHistory ? 'Historial de cultivo' : 'Historial detallado de cultivo',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),

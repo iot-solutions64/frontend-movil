@@ -109,7 +109,10 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           onPressed: () => Navigator.of(context).pop(),
           tooltip: 'Volver',
         ),
-        title: const Text('Acciones recomendadas'),
+        title: const Text(
+          'Acciones recomendadas',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         centerTitle: true,
       ),
       body: Column(

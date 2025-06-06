@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hydrosmart/core/resource.dart';
+import 'package:hydrosmart/features/irrigation/data/repository/irrigation_repository.dart';
+import 'package:hydrosmart/features/irrigation/domain/water_tank.dart';
 import 'package:hydrosmart/features/soil/domain/crop.dart';
 
 class SoilPage extends StatefulWidget {
@@ -9,47 +12,55 @@ class SoilPage extends StatefulWidget {
 }
 
 class _SoilPageState extends State<SoilPage> {
+  List<Crop> _crops = [];
+  List<WaterTank> _tanks = [];
+  bool _isLoading = false;
 
-  // Simulación de datos
-  List<Crop> cultivos = [
-    Crop(id: 1, name: 'Maiz Dulce', maxLiters: 6000, autoIrrigation: true, tankId: 1),
-    Crop(id: 2, name: 'Tomates Cherry', maxLiters: 8000, autoIrrigation: false, tankId: 2),
-    Crop(id: 3, name: 'Lechuga Romana', maxLiters: 5000, autoIrrigation: true, tankId: 1),
-    Crop(id: 4, name: 'Zanahorias', maxLiters: 7000, autoIrrigation: false, tankId: 3),
-    Crop(id: 5, name: 'Pimientos Rojos', maxLiters: 4000, autoIrrigation: true, tankId: 2),
-    Crop(id: 6, name: 'Espinacas', maxLiters: 3000, autoIrrigation: true, tankId: 1),
-    Crop(id: 7, name: 'Berenjenas', maxLiters: 2000, autoIrrigation: true, tankId: 2),
-    Crop(id: 8, name: 'Calabacines', maxLiters: 1000, autoIrrigation: false, tankId: 3),
-    Crop(id: 9, name: 'Brócoli', maxLiters: 9500, autoIrrigation: true, tankId: 1),
-    Crop(id: 10, name: 'Coliflor', maxLiters: 1000, autoIrrigation: true, tankId: 2),
-    Crop(id: 11, name: 'Cebollas', maxLiters: 2000, autoIrrigation: false, tankId: 3),
-    Crop(id: 12, name: 'Ajo', maxLiters: 3000, autoIrrigation: true, tankId: 1),
-    Crop(id: 13, name: 'Perejil', maxLiters: 14000, autoIrrigation: true, tankId: 2),
-    Crop(id: 14, name: 'Albahaca', maxLiters: 5000, autoIrrigation: true, tankId: 3),
-    Crop(id: 15, name: 'Cilantro', maxLiters: 5600, autoIrrigation: true, tankId: 1),
-    Crop(id: 16, name: 'Menta', maxLiters: 7000, autoIrrigation: false, tankId: 2),
-  ];
-
-  List<String> tanques = ['Tanque A', 'Tanque B', 'Tanque C'];
-
-  String _getTanqueName(int tankId) {
-    switch (tankId) {
-      case 1:
-        return 'Tanque A';
-      case 2:
-        return 'Tanque B';
-      case 3:
-        return 'Tanque C';
-      default:
-        return 'Desconocido';
-    }
+  @override
+  void initState() {
+    super.initState();
+    _fetchCrops();
+  }
+  void _fetchCrops() {
+    setState(() {
+      _isLoading = true;
+    });
+    IrrigationRepository().getWaterTanks().then((result) {
+      if(result is Success) {
+        setState(() {
+          _tanks = result.data!;
+          int id = _tanks.elementAt(0).id;
+          _crops = [
+          Crop(id: 1, name: 'Maiz Dulce', waterTankId: id),
+          Crop(id: 2, name: 'Tomates Cherry', waterTankId: id),
+          Crop(id: 3, name: 'Lechuga Romana', waterTankId: id),
+          Crop(id: 4, name: 'Zanahorias', waterTankId: id),
+          Crop(id: 5, name: 'Pimientos Rojos', waterTankId: id),
+          Crop(id: 6, name: 'Espinacas', waterTankId: id),
+          Crop(id: 7, name: 'Berenjenas', waterTankId: id),
+          Crop(id: 8, name: 'Calabacines', waterTankId: id),
+          Crop(id: 9, name: 'Brócoli', waterTankId: id),
+          Crop(id: 10, name: 'Coliflor', waterTankId: id),
+          Crop(id: 11, name: 'Cebollas', waterTankId: id),
+          Crop(id: 12, name: 'Ajo', waterTankId: id),
+          Crop(id: 13, name: 'Perejil', waterTankId: id),
+          Crop(id: 14, name: 'Albahaca', waterTankId: id),
+          Crop(id: 15, name: 'Cilantro', waterTankId: id),
+          Crop(id: 16, name: 'Menta', waterTankId: id)
+          ];
+          _isLoading = false;
+        });
+      } else if (result is Error) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
   }
   
   void _showAddDialog() {
     final nombreController = TextEditingController();
-    final cantidadController = TextEditingController();
-    String selectedTanque = tanques[0];
-    bool riegoAutomatico = false;
+    WaterTank selectedTanque = _tanks.isNotEmpty ? _tanks.first : WaterTank(id: 0, name: '', remainingLiters: 0, totalLiters: 0, status: '');
 
     showDialog(
       context: context,
@@ -65,13 +76,13 @@ class _SoilPageState extends State<SoilPage> {
                     controller: nombreController,
                     decoration: const InputDecoration(labelText: 'Nombre'),
                   ),
-                  DropdownButtonFormField<String>(
+                  DropdownButtonFormField<WaterTank>(
                     value: selectedTanque,
                     decoration: const InputDecoration(labelText: 'Tanque de agua'),
-                    items: tanques
+                    items: _tanks
                         .map((tanque) => DropdownMenuItem(
                               value: tanque,
-                              child: Text(tanque),
+                              child: Text(tanque.name),
                             ))
                         .toList(),
                     onChanged: (value) {
@@ -81,23 +92,6 @@ class _SoilPageState extends State<SoilPage> {
                         });
                       }
                     },
-                  ),
-                  TextField(
-                    controller: cantidadController,
-                    decoration: const InputDecoration(labelText: 'Cantidad máxima (litros)'),
-                    keyboardType: TextInputType.number,
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Riego automático'),
-                    value: riegoAutomatico,
-                    onChanged: (value) {
-                      setStateDialog(() {
-                        riegoAutomatico = value ?? false;
-                      });
-                    },
-                    activeColor: Colors.blue,
-                    checkColor: Colors.white,
-                    controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
               ),
@@ -116,13 +110,11 @@ class _SoilPageState extends State<SoilPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      cultivos.add(
+                      _crops.add(
                         Crop(
-                          id: cultivos.length + 1,
+                          id: _crops.length + 1,
                           name: nombreController.text,
-                          maxLiters: int.tryParse(cantidadController.text) ?? 0,
-                          autoIrrigation: riegoAutomatico,
-                          tankId: tanques.indexOf(selectedTanque) + 1,
+                          waterTankId: selectedTanque.id,
                         ),
                       );
                     });
@@ -140,9 +132,10 @@ class _SoilPageState extends State<SoilPage> {
 
   void _showEditDialog(Crop cultivo) {
     final nombreController = TextEditingController(text: cultivo.name);
-    final cantidadController = TextEditingController(text: cultivo.maxLiters.toString());
-    String selectedTanque = _getTanqueName(cultivo.tankId);
-    bool riegoAutomatico = cultivo.autoIrrigation;
+    WaterTank? selectedTanque = _tanks.firstWhere(
+      (t) => t.id == cultivo.waterTankId,
+      orElse: () => _tanks.isNotEmpty ? _tanks.first : WaterTank(id: 0, name: '', remainingLiters: 0, totalLiters: 0, status: ''),
+    );
 
     showDialog(
       context: context,
@@ -158,13 +151,13 @@ class _SoilPageState extends State<SoilPage> {
                     controller: nombreController,
                     decoration: const InputDecoration(labelText: 'Nombre'),
                   ),
-                  DropdownButtonFormField<String>(
+                  DropdownButtonFormField<WaterTank>(
                     value: selectedTanque,
                     decoration: const InputDecoration(labelText: 'Tanque de agua'),
-                    items: tanques
+                    items: _tanks
                         .map((tanque) => DropdownMenuItem(
                               value: tanque,
-                              child: Text(tanque),
+                              child: Text(tanque.name),
                             ))
                         .toList(),
                     onChanged: (value) {
@@ -174,23 +167,6 @@ class _SoilPageState extends State<SoilPage> {
                         });
                       }
                     },
-                  ),
-                  TextField(
-                    controller: cantidadController,
-                    decoration: const InputDecoration(labelText: 'Cantidad máxima (litros)'),
-                    keyboardType: TextInputType.number,
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Riego automático'),
-                    value: riegoAutomatico,
-                    onChanged: (value) {
-                      setStateDialog(() {
-                        riegoAutomatico = value ?? false;
-                      });
-                    },
-                    activeColor: Colors.blue,
-                    checkColor: Colors.white,
-                    controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ],
               ),
@@ -209,14 +185,12 @@ class _SoilPageState extends State<SoilPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      final index = cultivos.indexWhere((c) => c.id == cultivo.id);
-                      if (index != -1) {
-                        cultivos[index] = Crop(
+                      final index = _crops.indexWhere((c) => c.id == cultivo.id);
+                      if (index != -1 && selectedTanque != null) {
+                        _crops[index] = Crop(
                           id: cultivo.id,
                           name: nombreController.text,
-                          maxLiters: int.tryParse(cantidadController.text) ?? 0,
-                          autoIrrigation: riegoAutomatico,
-                          tankId: tanques.indexOf(selectedTanque) + 1,
+                          waterTankId: selectedTanque!.id,
                         );
                       }
                     });
@@ -254,7 +228,7 @@ class _SoilPageState extends State<SoilPage> {
               ),
               onPressed: () {
                 setState(() {
-                  cultivos.removeWhere((c) => c.id == cultivo.id);
+                  _crops.removeWhere((c) => c.id == cultivo.id);
                 });
                 Navigator.pop(context);
               },
@@ -281,7 +255,9 @@ class _SoilPageState extends State<SoilPage> {
           ),
         ),
       ),
-      body: Padding(
+      body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -296,36 +272,12 @@ class _SoilPageState extends State<SoilPage> {
                     columns: const [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('Nombre')),
-                      DataColumn(label: Text('Cantidad')),
-                      DataColumn(label: Text('Riego autom.')),
                       DataColumn(label: Text('Acciones')),
                     ],
-                    rows: cultivos.map((cultivo) {
+                    rows: _crops.map((cultivo) {
                       return DataRow(cells: [
                         DataCell(Text(cultivo.id.toString())),
                         DataCell(Text(cultivo.name)),
-                        DataCell(Text(cultivo.maxLiters.toString())),
-                        DataCell(
-                          Checkbox(
-                            value: cultivo.autoIrrigation,
-                            onChanged: (value) {
-                              setState(() {
-                                final index = cultivos.indexWhere((c) => c.id == cultivo.id);
-                                if (index != -1) {
-                                  cultivos[index] = Crop(
-                                    id: cultivo.id,
-                                    name: cultivo.name,
-                                    maxLiters: cultivo.maxLiters,
-                                    autoIrrigation: value ?? false,
-                                    tankId: cultivo.tankId,
-                                  );
-                                }
-                              });
-                            },
-                            activeColor: Colors.blue,
-                            checkColor: Colors.white,
-                          ),
-                        ),
                         DataCell(Row(
                           children: [
                             IconButton(

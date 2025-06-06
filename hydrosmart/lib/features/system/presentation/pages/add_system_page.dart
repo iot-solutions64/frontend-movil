@@ -21,7 +21,7 @@ class _AddSystemPageState extends State<AddSystemPage> {
 
   void _fetchSystemsToAdd() {
     // TODO: Implement the actual logic to fetch systems from an API service
-    Future.delayed(const Duration(milliseconds: 800), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       setState(() {
         _systems = [
           System(
@@ -81,10 +81,16 @@ class _AddSystemPageState extends State<AddSystemPage> {
             const SizedBox(height: 20),
 
             if (_loading)
-              const Text(
-                'Se están buscando sistemas nuevos para agregar...',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+              const Column(
+                children: [
+                  Text(
+                    'Se están buscando sistemas nuevos para agregar...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 24),
+                  CircularProgressIndicator(),
+                ],
               )
             else // v-else
               Column(

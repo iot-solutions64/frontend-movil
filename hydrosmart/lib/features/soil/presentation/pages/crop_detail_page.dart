@@ -71,6 +71,10 @@ class _CropDetailPageState extends State<CropDetailPage> {
     Navigator.of(context).pushNamed('/crop_history', arguments: {'cropId': _cropId, 'short': false});
   }
 
+  void _goToSystem() {
+    Navigator.of(context).pop();
+  }
+
   // Helper function for system info buttons (retained)
   Widget _buildSystemInfoButton({
     required BuildContext context,
@@ -347,10 +351,7 @@ class _CropDetailPageState extends State<CropDetailPage> {
                   label: 'Visualizar sistema de cultivo',
                   icon: Icons.settings,
                   subtitle: 'Datos del sistema',
-                  onPressed: () {
-                    // Navigate to system details page
-                    // Navigator.of(context).pushNamed('/system-details', arguments: cultivo?.systemId);
-                  },
+                  onPressed: _goToSystem,
                 ),
               ],
             ),
