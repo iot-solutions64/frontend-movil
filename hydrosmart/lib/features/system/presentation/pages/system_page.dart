@@ -106,6 +106,7 @@ List<System> _systems = [];
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Sistemas',
           style: TextStyle(fontWeight: FontWeight.bold),
