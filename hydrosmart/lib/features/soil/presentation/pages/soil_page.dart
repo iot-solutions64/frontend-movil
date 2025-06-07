@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hydrosmart/core/resource.dart';
 import 'package:hydrosmart/features/irrigation/data/repository/irrigation_repository.dart';
 import 'package:hydrosmart/features/irrigation/domain/water_tank.dart';
+import 'package:hydrosmart/features/soil/constants/options.dart';
+import 'package:hydrosmart/features/soil/data/repository/crop_repository.dart';
 import 'package:hydrosmart/features/soil/domain/crop.dart';
 
 class SoilPage extends StatefulWidget {
@@ -21,6 +23,7 @@ class _SoilPageState extends State<SoilPage> {
     super.initState();
     _fetchCrops();
   }
+
   void _fetchCrops() {
     setState(() {
       _isLoading = true;
@@ -29,55 +32,80 @@ class _SoilPageState extends State<SoilPage> {
       if(result is Success) {
         setState(() {
           _tanks = result.data!;
-          int id = _tanks.elementAt(0).id;
-          _crops = [
-          Crop(id: 1, name: 'Maiz Dulce', waterTankId: id),
-          Crop(id: 2, name: 'Tomates Cherry', waterTankId: id),
-          Crop(id: 3, name: 'Lechuga Romana', waterTankId: id),
-          Crop(id: 4, name: 'Zanahorias', waterTankId: id),
-          Crop(id: 5, name: 'Pimientos Rojos', waterTankId: id),
-          Crop(id: 6, name: 'Espinacas', waterTankId: id),
-          Crop(id: 7, name: 'Berenjenas', waterTankId: id),
-          Crop(id: 8, name: 'Calabacines', waterTankId: id),
-          Crop(id: 9, name: 'Brócoli', waterTankId: id),
-          Crop(id: 10, name: 'Coliflor', waterTankId: id),
-          Crop(id: 11, name: 'Cebollas', waterTankId: id),
-          Crop(id: 12, name: 'Ajo', waterTankId: id),
-          Crop(id: 13, name: 'Perejil', waterTankId: id),
-          Crop(id: 14, name: 'Albahaca', waterTankId: id),
-          Crop(id: 15, name: 'Cilantro', waterTankId: id),
-          Crop(id: 16, name: 'Menta', waterTankId: id)
-          ];
-          _isLoading = false;
         });
       } else if (result is Error) {
         setState(() {
           _isLoading = false;
+          _showCustomToast('Error al cargar los tanques de agua: ${result.message}', backgroundColor: Colors.red);
+        });
+      }
+    });
+    CropRepository().getCrops().then((res) {
+      if (res is Success) {
+        setState(() {
+          _crops = res.data!;
+          _isLoading = false;
+        });
+        print(res.data);
+      } else if (res is Error) {
+        setState(() {
+          _isLoading = false;
+          _showCustomToast('Error al cargar los cultivos: ${res.message}', backgroundColor: Colors.red);
         });
       }
     });
   }
+
+  void _showCustomToast(String message, {Color backgroundColor = Colors.black, Color textColor = Colors.white}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message, style: TextStyle(color: textColor)),
+        backgroundColor: backgroundColor,
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
   
   void _showAddDialog() {
     final nombreController = TextEditingController();
-    WaterTank selectedTanque = _tanks.isNotEmpty ? _tanks.first : WaterTank(id: 0, name: '', remainingLiters: 0, totalLiters: 0, status: '');
+    WaterTank selectedTank = _tanks.isNotEmpty ? _tanks.first : WaterTank(id: 0, name: '', remainingLiters: 0, totalLiters: 0, status: '');
+
+    String selectedHumidity = humidityOptions.keys.first;
+    String selectedTemperature = temperatureOptions.keys.first;
+
+    final irrigationDurationController = TextEditingController();
+    final irrigationMaxWaterUsageController = TextEditingController();
+    final hourFrequencyController = TextEditingController();
+
+    final formKey = GlobalKey<FormState>();
+
+    int currentStep = 0;
 
     showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
-            return AlertDialog(
-              title: const Text('Agregar Cultivo'),
-              content: Column(
+            List<Widget> steps = [
+              // Paso 1: Datos básicos
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
+                  TextFormField(
                     controller: nombreController,
                     decoration: const InputDecoration(labelText: 'Nombre'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese un nombre';
+                      }
+                      return null;
+                    },
                   ),
                   DropdownButtonFormField<WaterTank>(
-                    value: selectedTanque,
+                    value: selectedTank,
                     decoration: const InputDecoration(labelText: 'Tanque de agua'),
                     items: _tanks
                         .map((tanque) => DropdownMenuItem(
@@ -88,40 +116,179 @@ class _SoilPageState extends State<SoilPage> {
                     onChanged: (value) {
                       if (value != null) {
                         setStateDialog(() {
-                          selectedTanque = value;
+                          selectedTank = value;
+                        });
+                      }
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: selectedTemperature,
+                    decoration: const InputDecoration(labelText: 'Tipo de temperatura'),
+                    items: temperatureOptions.keys
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setStateDialog(() {
+                          selectedTemperature = value;
+                        });
+                      }
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: selectedHumidity,
+                    decoration: const InputDecoration(labelText: 'Tipo de humedad'),
+                    items: humidityOptions.keys
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setStateDialog(() {
+                          selectedHumidity = value;
                         });
                       }
                     },
                   ),
                 ],
               ),
+              // Paso 2: Parámetros de irrigación
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: irrigationDurationController,
+                    decoration: const InputDecoration(labelText: 'Duración de irrigación (minutos)'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese la duración';
+                      }
+                      final int? minutes = int.tryParse(value);
+                      if (minutes == null || minutes <= 0) {
+                        return 'Ingrese un número mayor a 0';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: irrigationMaxWaterUsageController,
+                    decoration: const InputDecoration(labelText: 'Uso máximo de agua (litros)'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese el uso máximo de agua';
+                      }
+                      final double? liters = double.tryParse(value);
+                      if (liters == null || liters <= 0) {
+                        return 'Ingrese un número mayor a 0';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: hourFrequencyController,
+                    decoration: const InputDecoration(labelText: 'Frecuencia de riego (horas)'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese la frecuencia de riego';
+                      }
+                      final int? freq = int.tryParse(value);
+                      if (freq == null || freq <= 0) {
+                        return 'Ingrese un número mayor a 0';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ];
+
+            return AlertDialog(
+              title: const Text('Agregar Cultivo'),
+              content: Form(
+                key: formKey,
+                child: steps[currentStep],
+              ),
               actions: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xB41856C3),
+                if (currentStep == 0)
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancelar'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xB41856C3),
+                    ),
                   ),
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancelar'),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xB41856C3),
-                    foregroundColor: Colors.white,
+                if (currentStep > 0)
+                  TextButton(
+                    onPressed: () {
+                      setStateDialog(() {
+                        currentStep--;
+                      });
+                    },
+                    child: const Text('Anterior'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xB41856C3),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _crops.add(
-                        Crop(
-                          id: _crops.length + 1,
-                          name: nombreController.text,
-                          waterTankId: selectedTanque.id,
-                        ),
-                      );
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Agregar'),
-                ),
+                if (currentStep < steps.length - 1)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xB41856C3),
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        setStateDialog(() {
+                          currentStep++;
+                        });
+                      }
+                    },
+                    child: const Text('Siguiente'),
+                  ),
+                if (currentStep == steps.length - 1)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xB41856C3),
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          final tempRange = temperatureOptions[selectedTemperature]!;
+                          final humRange = humidityOptions[selectedHumidity]!;
+                          final now = DateTime.now();
+                          final date = "${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+                          final hour = "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
+                          final crop = Crop(
+                            id: _crops.length + 1,
+                            name: nombreController.text,
+                            waterTankId: selectedTank.id,
+                            temperatureMinThreshold: tempRange[0],
+                            temperatureMaxThreshold: tempRange[1],
+                            humidityMinThreshold: humRange[0],
+                            humidityMaxThreshold: humRange[1],
+                            hourFrequency: int.tryParse(hourFrequencyController.text) ?? 1,
+                            irrigationStartDate: date,
+                            irrigationStartTime: hour,
+                            irrigationDisallowedStartTime: '00:00:00',
+                            irrigationDisallowedEndTime: '23:59:59',
+                            irrigationDurationInMinutes: int.tryParse(irrigationDurationController.text) ?? 0,
+                            irrigationMaxWaterUsage: double.tryParse(irrigationMaxWaterUsageController.text) ?? 0.0,
+                          );
+                          _saveCrop(crop);
+                          Navigator.of(context).pop();
+                        });
+                      }
+                    },
+                    child: const Text('Agregar'),
+                  ),
               ],
             );
           },
@@ -130,12 +297,24 @@ class _SoilPageState extends State<SoilPage> {
     );
   }
 
-  void _showEditDialog(Crop cultivo) {
-    final nombreController = TextEditingController(text: cultivo.name);
-    WaterTank? selectedTanque = _tanks.firstWhere(
-      (t) => t.id == cultivo.waterTankId,
-      orElse: () => _tanks.isNotEmpty ? _tanks.first : WaterTank(id: 0, name: '', remainingLiters: 0, totalLiters: 0, status: ''),
-    );
+  void _showEditDialog(Crop crop) {
+    String selectedHumidity = humidityOptions.entries
+        .firstWhere(
+          (e) =>
+              e.value[0] == crop.humidityMinThreshold &&
+              e.value[1] == crop.humidityMaxThreshold,
+          orElse: () => humidityOptions.entries.first,
+        )
+        .key;
+
+    String selectedTemperature = temperatureOptions.entries
+        .firstWhere(
+          (e) =>
+              e.value[0] == crop.temperatureMinThreshold &&
+              e.value[1] == crop.temperatureMaxThreshold,
+          orElse: () => temperatureOptions.entries.first,
+        )
+        .key;
 
     showDialog(
       context: context,
@@ -143,27 +322,40 @@ class _SoilPageState extends State<SoilPage> {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
             return AlertDialog(
-              title: const Text('Editar Cultivo'),
+              title: const Text('Editar Humedad y Temperatura'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
-                    controller: nombreController,
-                    decoration: const InputDecoration(labelText: 'Nombre'),
-                  ),
-                  DropdownButtonFormField<WaterTank>(
-                    value: selectedTanque,
-                    decoration: const InputDecoration(labelText: 'Tanque de agua'),
-                    items: _tanks
-                        .map((tanque) => DropdownMenuItem(
-                              value: tanque,
-                              child: Text(tanque.name),
+                  DropdownButtonFormField<String>(
+                    value: selectedTemperature,
+                    decoration: const InputDecoration(labelText: 'Tipo de temperatura'),
+                    items: temperatureOptions.keys
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
                             ))
                         .toList(),
                     onChanged: (value) {
                       if (value != null) {
                         setStateDialog(() {
-                          selectedTanque = value;
+                          selectedTemperature = value;
+                        });
+                      }
+                    },
+                  ),
+                  DropdownButtonFormField<String>(
+                    value: selectedHumidity,
+                    decoration: const InputDecoration(labelText: 'Tipo de humedad'),
+                    items: humidityOptions.keys
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setStateDialog(() {
+                          selectedHumidity = value;
                         });
                       }
                     },
@@ -185,15 +377,17 @@ class _SoilPageState extends State<SoilPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      final index = _crops.indexWhere((c) => c.id == cultivo.id);
-                      if (index != -1 && selectedTanque != null) {
-                        _crops[index] = Crop(
-                          id: cultivo.id,
-                          name: nombreController.text,
-                          waterTankId: selectedTanque!.id,
-                        );
-                      }
+                      final tempRange = temperatureOptions[selectedTemperature]!;
+                      final humRange = humidityOptions[selectedHumidity]!;
+                      crop.temperatureMinThreshold = tempRange[0];
+                      crop.temperatureMaxThreshold = tempRange[1];
+                      crop.temperature = tempRange[0] + 1; // Placeholder for temperature, adjust as needed
+                      crop.humidityMinThreshold = humRange[0];
+                      crop.humidityMaxThreshold = humRange[1];
+                      crop.humidity = humRange[0] + 1; // Placeholder for humidity, adjust as needed
+
                     });
+                    _editCrop(crop);
                     Navigator.pop(context);
                   },
                   child: const Text('Guardar'),
@@ -206,13 +400,13 @@ class _SoilPageState extends State<SoilPage> {
     );
   }
 
-  void _showDeleteDialog(Crop cultivo) {
+  void _showDeleteDialog(Crop crop) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Eliminar Cultivo'),
-          content: Text('¿Seguro que deseas eliminar "${cultivo.name}"?'),
+          content: Text('¿Seguro que deseas eliminar "${crop.name}"?'),
           actions: [
             TextButton(
               style: TextButton.styleFrom(
@@ -228,7 +422,8 @@ class _SoilPageState extends State<SoilPage> {
               ),
               onPressed: () {
                 setState(() {
-                  _crops.removeWhere((c) => c.id == cultivo.id);
+                  _deleteCrop(crop.id);
+                  _showCustomToast('Cultivo eliminado exitosamente.', backgroundColor: Colors.green);
                 });
                 Navigator.pop(context);
               },
@@ -238,6 +433,51 @@ class _SoilPageState extends State<SoilPage> {
         );
       },
     );
+  }
+
+  void _saveCrop(Crop crop) {
+    setState(() {
+      CropRepository().addCrop(crop).then((result) {
+        if (result is Success) {
+          _fetchCrops();
+          _showCustomToast('Cultivo guardado exitosamente.', backgroundColor: Colors.green);
+        } else if (result is Error) {
+          _showCustomToast('Error al guardar el cultivo: ${result.message}', backgroundColor: Colors.red);
+        }
+      });
+    });
+  }
+
+  void _editCrop(Crop crop) {
+    setState(() {
+      CropRepository().putHumidity(crop).then((res) {
+        if (res is Success) {
+          CropRepository().putTemperature(crop).then((res) {
+            if (res is Success) {
+              _fetchCrops();
+                _showCustomToast('Cultivo editado exitosamente.', backgroundColor: Colors.green);
+            } else if (res is Error) {
+              _showCustomToast('Error al editar la temperatura: ${res.message}', backgroundColor: Colors.red);
+            }
+          });
+        } else if (res is Error) {
+          _showCustomToast('Error al editar la humedad: ${res.message}', backgroundColor: Colors.red);
+        }
+      });
+    });
+  }
+
+  void _deleteCrop(int id) {
+    setState(() {
+      CropRepository().deleteCrop(id).then((result) {
+        if (result is Success) {
+          _fetchCrops();
+          _showCustomToast("Cultivo eliminado exitosamente!", backgroundColor: Colors.green);
+        } else if (result is Error) {
+          _showCustomToast(result.message!, backgroundColor: Colors.red);
+        }
+      });
+    });
   }
 
   @override
