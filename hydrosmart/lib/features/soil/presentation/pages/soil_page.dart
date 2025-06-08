@@ -46,7 +46,6 @@ class _SoilPageState extends State<SoilPage> {
           _crops = res.data!;
           _isLoading = false;
         });
-        print(res.data);
       } else if (res is Error) {
         setState(() {
           _isLoading = false;
@@ -385,10 +384,9 @@ class _SoilPageState extends State<SoilPage> {
                       crop.humidityMinThreshold = humRange[0];
                       crop.humidityMaxThreshold = humRange[1];
                       crop.humidity = humRange[0] + 1; // Placeholder for humidity, adjust as needed
-
+                      _editCrop(crop);
+                      Navigator.pop(context);
                     });
-                    _editCrop(crop);
-                    Navigator.pop(context);
                   },
                   child: const Text('Guardar'),
                 ),
@@ -480,6 +478,10 @@ class _SoilPageState extends State<SoilPage> {
     });
   }
 
+  void _showCropDetail(Crop crop) {
+    Navigator.pushNamed(context, '/crop_detail', arguments: crop);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -514,25 +516,23 @@ class _SoilPageState extends State<SoilPage> {
                       DataColumn(label: Text('Nombre')),
                       DataColumn(label: Text('Acciones')),
                     ],
-                    rows: _crops.map((cultivo) {
+                    rows: _crops.map((crop) {
                       return DataRow(cells: [
-                        DataCell(Text(cultivo.id.toString())),
-                        DataCell(Text(cultivo.name)),
+                        DataCell(Text(crop.id.toString())),
+                        DataCell(Text(crop.name)),
                         DataCell(Row(
                           children: [
                             IconButton(
                               icon: const Icon(Icons.search, color: Color(0xFF1856C3)),
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/crop_detail', arguments: cultivo);
-                              },
+                              onPressed: () => _showCropDetail(crop),
                             ),
                             IconButton(
                               icon: const Icon(Icons.edit, color: Color(0xFF27AE60)),
-                              onPressed: () => _showEditDialog(cultivo),
+                              onPressed: () => _showEditDialog(crop),
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete, color: Color(0xFFF84343)),
-                              onPressed: () => _showDeleteDialog(cultivo),
+                              onPressed: () => _showDeleteDialog(crop),
                             ),
                           ],
                         )),

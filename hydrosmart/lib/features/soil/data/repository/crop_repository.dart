@@ -1,9 +1,11 @@
 import 'package:hydrosmart/core/global_variables.dart';
 import 'package:hydrosmart/core/resource.dart';
+import 'package:hydrosmart/features/soil/data/remote/crop_detailed_response_dto.dart';
 import 'package:hydrosmart/features/soil/data/remote/crop_request_dto.dart';
 import 'package:hydrosmart/features/soil/data/remote/crop_response_dto.dart';
 import 'package:hydrosmart/features/soil/data/remote/crop_service.dart';
 import 'package:hydrosmart/features/soil/domain/crop.dart';
+import 'package:hydrosmart/features/soil/domain/crop_detailed.dart';
 
 class CropRepository {
 
@@ -49,6 +51,16 @@ class CropRepository {
 
     if (result is Success) {
       return Success(result.data!.toCrop());
+    } else {
+      return Error(result.message!);
+    }
+  }
+
+  Future<Resource<CropDetailed>> getCropDetailed(int cropId) async {
+    Resource<CropDetailedResponseDto> result = await CropService().getCropDetailed(cropId);
+
+    if (result is Success) {
+      return Success(result.data!.toCropDetailed());
     } else {
       return Error(result.message!);
     }

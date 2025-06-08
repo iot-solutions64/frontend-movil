@@ -5,11 +5,9 @@ class Crop {
   double temperatureMinThreshold;
   double temperatureMaxThreshold;
   double temperature;
-  String temperatureStatus;
   double humidityMinThreshold;
   double humidityMaxThreshold;
   double humidity;
-  String humidityStatus;
   final int hourFrequency;
   final String irrigationStartDate;
   final String irrigationStartTime;
@@ -25,11 +23,9 @@ class Crop {
     this.temperatureMinThreshold = 0.0,
     this.temperatureMaxThreshold = 0.0,
     this.temperature = 0.0,
-    this.temperatureStatus = '',
     this.humidityMinThreshold = 0.0,
     this.humidityMaxThreshold = 0.0,
     this.humidity = 0.0,
-    this.humidityStatus = '',
     this.hourFrequency = 0,
     this.irrigationStartDate = '',
     this.irrigationStartTime = '',
