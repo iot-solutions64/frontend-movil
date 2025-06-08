@@ -43,7 +43,6 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
   }
 
   void _fetchSuggestions() {
-    // TODO: Get the status from the API with the id
     switch (_id) {
       case 1:
         _status = 'FAVORABLE';
@@ -159,8 +158,11 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
                               if (loadingProgress == null) return child;
                               return const Center(child: CircularProgressIndicator());
                             },
-                            errorBuilder: (context, error, stackTrace) => const Center(
-                              child: Icon(Icons.play_circle_outline, size: 48, color: Color(0xFF000000)),
+                            errorBuilder: (context, error, stackTrace) => Center(
+                              child: Image.network(
+                                'https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

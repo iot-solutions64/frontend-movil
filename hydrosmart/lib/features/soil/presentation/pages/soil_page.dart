@@ -321,7 +321,7 @@ class _SoilPageState extends State<SoilPage> {
         return StatefulBuilder(
           builder: (context, setStateDialog) {
             return AlertDialog(
-              title: const Text('Editar Humedad y Temperatura'),
+              title: const Text('Editar Cultivo'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
