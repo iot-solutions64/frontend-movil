@@ -78,7 +78,7 @@ class IrrigationService {
   Future<Resource<WaterTankResponseDto>> patchRemainingWater(int tankId, double waterAmount) async {
     try {
       http.Response response = await http.patch(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.waterTankEndpoint}/{id}/water-remaining'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.waterTankEndpoint}/water-remaining'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GlobalVariables.token}'
@@ -124,7 +124,7 @@ class IrrigationService {
   Future<Resource<WaterTankResponseDto>> patchName(int tankId, String name) async {
     try {
       http.Response response = await http.patch(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.waterTankEndpoint}/{id}/name'),
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.waterTankEndpoint}/name'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GlobalVariables.token}'
