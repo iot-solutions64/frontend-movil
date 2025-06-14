@@ -43,7 +43,6 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
   }
 
   void _fetchSuggestions() {
-    // TODO: Get the status from the API with the id
     switch (_id) {
       case 1:
         _status = 'FAVORABLE';
@@ -70,7 +69,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           _status = 'DRY';
           break;
       }
-      _suggestions = HUMIDITY_SUGGESTIONS[_status]?['videos'] as List<Video>? ?? [];
+      _suggestions = humiditySuggestions[_status]?['videos'] as List<Video>? ?? [];
     } else {
       switch (_id) {
         case 6:
@@ -80,7 +79,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           _status = 'FREEZING';
           break;
       }
-      _suggestions = TEMPERATURE_SUGGESTIONS[_status]?['videos'] as List<Video>? ?? [];
+      _suggestions = temperatureSuggestions[_status]?['videos'] as List<Video>? ?? [];
     }
     setState(() {});
   }
@@ -93,6 +92,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
   Future<void> _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No se pudo abrir el video: $url')),
       );
@@ -109,7 +109,10 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           onPressed: () => Navigator.of(context).pop(),
           tooltip: 'Volver',
         ),
-        title: const Text('Acciones recomendadas'),
+        title: const Text(
+          'Acciones recomendadas',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         centerTitle: true,
       ),
       body: Column(
@@ -156,8 +159,11 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
                               if (loadingProgress == null) return child;
                               return const Center(child: CircularProgressIndicator());
                             },
-                            errorBuilder: (context, error, stackTrace) => const Center(
-                              child: Icon(Icons.play_circle_outline, size: 48, color: Color(0xFF000000)),
+                            errorBuilder: (context, error, stackTrace) => Center(
+                              child: Image.network(
+                                'https://d2uolguxr56s4e.cloudfront.net/img/kartrapages/video_player_placeholder.gif',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

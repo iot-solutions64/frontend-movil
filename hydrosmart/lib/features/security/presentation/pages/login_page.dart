@@ -5,12 +5,19 @@ import 'package:hydrosmart/features/security/presentation/bloc/login_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_event.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_state.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +71,26 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                    label: const Text('Contraseña'),
-                    prefixIcon: const Icon(Icons.key),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16))),
+                  label: const Text('Contraseña'),
+                  prefixIcon: const Icon(Icons.key),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)
+                ),
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  )
+                ),
+                        
               ),
             ),
             Padding(

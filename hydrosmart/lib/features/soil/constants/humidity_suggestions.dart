@@ -1,6 +1,6 @@
 import 'package:hydrosmart/features/soil/domain/video.dart';
 
-Map<String, Map<String, dynamic>> HUMIDITY_SUGGESTIONS = {
+Map<String, Map<String, dynamic>> humiditySuggestions = {
   'FAVORABLE': {
     'id': 1,
     'title': "Favorable",

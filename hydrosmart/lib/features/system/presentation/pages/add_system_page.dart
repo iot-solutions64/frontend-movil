@@ -20,8 +20,7 @@ class _AddSystemPageState extends State<AddSystemPage> {
   }
 
   void _fetchSystemsToAdd() {
-    // TODO: Implement the actual logic to fetch systems from an API service
-    Future.delayed(const Duration(milliseconds: 800), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       setState(() {
         _systems = [
           System(
@@ -43,7 +42,6 @@ class _AddSystemPageState extends State<AddSystemPage> {
   }
 
   void _addSystem(System system) {
-    // TODO: Implement the actual logic to add the system to the user's account
 
     ScaffoldMessenger.of(context).showSnackBar( SnackBar(
       content: const Text('Sistema agregado correctamente'),
@@ -81,10 +79,16 @@ class _AddSystemPageState extends State<AddSystemPage> {
             const SizedBox(height: 20),
 
             if (_loading)
-              const Text(
-                'Se están buscando sistemas nuevos para agregar...',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+              const Column(
+                children: [
+                  Text(
+                    'Se están buscando sistemas nuevos para agregar...',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 24),
+                  CircularProgressIndicator(),
+                ],
               )
             else // v-else
               Column(
@@ -126,7 +130,7 @@ class _AddSystemPageState extends State<AddSystemPage> {
                                       Container(
                                         width: 80,
                                         height: 80,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Color(0xFF092C4C),
                                           shape: BoxShape.circle,
                                         ),

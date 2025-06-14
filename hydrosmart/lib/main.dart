@@ -41,19 +41,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: isLoggedIn ? '/home' : '/login',
         routes: {
-          '/login': (context) => LoginPage(),
-          '/signup': (context) => SignupPage(),
+          '/login': (context) => const LoginPage(),
+          '/signup': (context) => const SignupPage(),
           '/home': (context) => const HomePage(),
           '/tanks': (context) => const TanksPage(),
           '/water_graph': (context) => const WaterGraphPage(),
-          '/add_system': (context) => AddSystemPage(),
+          '/add_system': (context) => const AddSystemPage(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/crop_detail') {
             final crop = settings.arguments;
             if (crop != null) {
               return MaterialPageRoute(
-                builder: (context) => CropDetailPage(),
+                builder: (context) => const CropDetailPage(),
                 settings: RouteSettings(arguments: crop),
               );
             }
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
             final args = settings.arguments;
             if (args is Map && args['cropId'] is int) {
               return MaterialPageRoute(
-                builder: (context) => CropHistoryPage(),
+                builder: (context) => const CropHistoryPage(),
                 settings: RouteSettings(arguments: args),
               );
             }
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             final args = settings.arguments;
             if (args is Map && args['id'] is int && args['isHumidity'] is bool) {
               return MaterialPageRoute(
-                builder: (context) => RecommendedActionsPage(),
+                builder: (context) => const RecommendedActionsPage(),
                 settings: RouteSettings(arguments: args),
               );
             }

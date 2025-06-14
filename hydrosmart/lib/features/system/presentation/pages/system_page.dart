@@ -19,7 +19,6 @@ List<System> _systems = [];
   }
 
   void _fetchSystems() {
-    // TODO: Implementar la lógica para obtener sistemas de un servicio API
     setState(() {
       _systems = [
         System(
@@ -106,6 +105,7 @@ List<System> _systems = [];
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Sistemas',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -214,8 +214,8 @@ List<System> _systems = [];
         backgroundColor: const Color(0xFF092C4C),
         onPressed: _goToAddSystem,
         tooltip: 'Añadir',
-        child: const Icon(Icons.add, color: Colors.white),
         shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

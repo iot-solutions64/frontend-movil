@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hydrosmart/core/resource.dart';
 import 'package:hydrosmart/features/soil/constants/humidity_suggestions.dart';
 import 'package:hydrosmart/features/soil/constants/temperature_suggestions.dart';
+import 'package:hydrosmart/features/soil/data/repository/crop_repository.dart';
 import 'package:hydrosmart/features/soil/domain/crop.dart';
+import 'package:hydrosmart/features/soil/domain/crop_detailed.dart';
 import 'package:hydrosmart/features/soil/domain/humidity.dart';
 import 'package:hydrosmart/features/soil/domain/temperature.dart';
 
@@ -14,11 +17,13 @@ class CropDetailPage extends StatefulWidget {
 }
 
 class _CropDetailPageState extends State<CropDetailPage> {
-  Crop? cultivo;
-  late int _cropId;
+  Crop? _crop;
+  CropDetailed? _cropDetail;
+  int _cropId = 0;
   Temperature _temperature = Temperature();
   Humidity _humidity = Humidity();
   bool _initialized = false;
+  bool _isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -26,8 +31,9 @@ class _CropDetailPageState extends State<CropDetailPage> {
     if (!_initialized) {
       final args = ModalRoute.of(context)?.settings.arguments;
       if (args is Crop) {
-        cultivo = args;
-        _cropId = cultivo!.id;
+        _crop = args;
+        _cropId = _crop!.id;
+        _fetchCropDetail();
         _initialized = true;
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -43,16 +49,47 @@ class _CropDetailPageState extends State<CropDetailPage> {
   @override
   void initState() {
     super.initState();
+  }
 
-    // TODO: Implement the logic to fetch temperature & humidity data from a service
-    // For now, hardcode data similar to your Vue example
-    _humidity = Humidity(id: 1, humidity: 70, minThreshold: 60, maxThreshold: 30, status: "FAVORABLE");
-    _temperature = Temperature(id: 1, temperature: 65, minThreshold: 60, maxThreshold: 30, status: "UNFAVORABLE_OVER");
+  void _fetchCropDetail() {
+    setState(() {
+      _isLoading = true;
+    });
 
-    // Important: Call setState if you're updating state outside of build
-    // (though for initial setup like this in initState, it's not strictly
-    // necessary immediately if the initial values are set directly, but
-    // would be needed if fetching async data and then updating).
+    if (!_initialized) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Crop) {
+        _crop = args;
+        _cropId = _crop!.id;
+        CropRepository().getCropDetailed(_crop!.id).then((result) {
+        if (result is Success) {
+          setState(() {
+            _cropDetail = result.data;
+            
+            _humidity = Humidity(humidity: _cropDetail!.humidity, minThreshold: _cropDetail!.humidityMinThreshold,
+              maxThreshold: _cropDetail!.humidityMaxThreshold, status: _cropDetail!.humidityStatus);
+
+            _temperature = Temperature(temperature: _cropDetail!.temperature, minThreshold: _cropDetail!.temperatureMinThreshold,
+              maxThreshold: _cropDetail!.temperatureMaxThreshold, status: _cropDetail!.temperatureStatus);
+
+            _isLoading = false;
+          });
+        } else if (result is Error) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
+        _initialized = true;
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No se pudo cargar el cultivo.')),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }
   }
 
   void _goToTemperatureActions(int temperatureId) {
@@ -69,6 +106,10 @@ class _CropDetailPageState extends State<CropDetailPage> {
 
   void _goToCompleteHistory() {
     Navigator.of(context).pushNamed('/crop_history', arguments: {'cropId': _cropId, 'short': false});
+  }
+
+  void _goToSystem() {
+    Navigator.of(context).pop();
   }
 
   // Helper function for system info buttons (retained)
@@ -132,7 +173,9 @@ class _CropDetailPageState extends State<CropDetailPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
-      child: Padding(
+      child: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -212,14 +255,14 @@ class _CropDetailPageState extends State<CropDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (cultivo == null) {
+    if (_cropDetail == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    final humidityStatusDetails = HUMIDITY_SUGGESTIONS[_humidity.status];
-    final temperatureStatusDetails = TEMPERATURE_SUGGESTIONS[_temperature.status];
+    final humidityStatusDetails = humiditySuggestions[_humidity.status];
+    final temperatureStatusDetails = temperatureSuggestions[_temperature.status];
 
     Color humidityStatusColor = Colors.green;
     bool humidityShowButton = true; // Assume true initially
@@ -347,10 +390,7 @@ class _CropDetailPageState extends State<CropDetailPage> {
                   label: 'Visualizar sistema de cultivo',
                   icon: Icons.settings,
                   subtitle: 'Datos del sistema',
-                  onPressed: () {
-                    // Navigate to system details page
-                    // Navigator.of(context).pushNamed('/system-details', arguments: cultivo?.systemId);
-                  },
+                  onPressed: _goToSystem,
                 ),
               ],
             ),
