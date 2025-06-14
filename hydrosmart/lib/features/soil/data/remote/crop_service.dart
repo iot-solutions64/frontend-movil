@@ -96,16 +96,15 @@ class CropService {
     }
   }
 
-  Future<Resource> putTemperature(int cropId, double temperature, double temperatureMinThreshold, double temperatureMaxThreshold) async {
+  Future<Resource> patchTemperatureThreshold(int cropId, double temperatureMinThreshold, double temperatureMaxThreshold) async {
     try {
-      http.Response response = await http.put(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.cropEndpoint}/$cropId/temperature'),
+      http.Response response = await http.patch(
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.cropEndpoint}/$cropId/temperature-threshold'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GlobalVariables.token}'
         },
         body: jsonEncode({
-          'temperature': temperature,
           'temperatureMinThreshold': temperatureMinThreshold,
           'temperatureMaxThreshold': temperatureMaxThreshold,
         }),
@@ -142,16 +141,15 @@ class CropService {
     }
   }
 
-  Future<Resource> putHumidity(int cropId, double humidity, double humidityMinThreshold, double humidityMaxThreshold) async {
+  Future<Resource> patchHumidityThreshold(int cropId, double humidityMinThreshold, double humidityMaxThreshold) async {
     try {
-      http.Response response = await http.put(
-        Uri.parse('${AppConstants.baseUrl}${AppConstants.cropEndpoint}/$cropId/humidity'),
+      http.Response response = await http.patch(
+        Uri.parse('${AppConstants.baseUrl}${AppConstants.cropEndpoint}/$cropId/humidity-threshold'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${GlobalVariables.token}'
         },
         body: jsonEncode({
-          'humidity': humidity,
           'humidityMinThreshold': humidityMinThreshold,
           'humidityMaxThreshold': humidityMaxThreshold,
         }),

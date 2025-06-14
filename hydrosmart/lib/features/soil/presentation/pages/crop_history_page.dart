@@ -91,11 +91,11 @@ class _CropHistoryPageState extends State<CropHistoryPage> {
   }
 
   String _getHumidityTitle(String key) {
-    return HUMIDITY_SUGGESTIONS[key]?['title'] ?? key;
+    return humiditySuggestions[key]?['title'] ?? key;
   }
 
   String _getTemperatureTitle(String key) {
-    return TEMPERATURE_SUGGESTIONS[key]?['title'] ?? key;
+    return temperatureSuggestions[key]?['title'] ?? key;
   }
 
   @override

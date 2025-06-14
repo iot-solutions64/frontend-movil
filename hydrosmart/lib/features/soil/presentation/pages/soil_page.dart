@@ -446,9 +446,9 @@ class _SoilPageState extends State<SoilPage> {
 
   void _editCrop(Crop crop) {
     setState(() {
-      CropRepository().putHumidity(crop).then((res) {
+      CropRepository().patchHumidityThreshold(crop).then((res) {
         if (res is Success) {
-          CropRepository().putTemperature(crop).then((res) {
+          CropRepository().patchTemperatureThreshold(crop).then((res) {
             if (res is Success) {
               _fetchCrops();
                 _showCustomToast('Cultivo editado exitosamente.', backgroundColor: Colors.green);

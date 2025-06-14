@@ -66,10 +66,9 @@ class CropRepository {
     }
   }
 
-  Future<Resource> putTemperature(Crop crop) async {
-    Resource result = await CropService().putTemperature(
+  Future<Resource> patchTemperatureThreshold(Crop crop) async {
+    Resource result = await CropService().patchTemperatureThreshold(
       crop.id,
-      crop.temperatureMinThreshold, // temporary
       crop.temperatureMinThreshold,
       crop.temperatureMaxThreshold,
     );
@@ -81,10 +80,9 @@ class CropRepository {
     }
   }
 
-  Future<Resource> putHumidity(Crop crop) async {
-    Resource result = await CropService().putHumidity(
+  Future<Resource> patchHumidityThreshold(Crop crop) async {
+    Resource result = await CropService().patchHumidityThreshold(
       crop.id,
-      crop.humidityMinThreshold, // temporary
       crop.humidityMinThreshold,
       crop.humidityMaxThreshold,
     );

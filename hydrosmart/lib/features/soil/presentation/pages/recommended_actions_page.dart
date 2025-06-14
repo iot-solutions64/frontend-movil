@@ -69,7 +69,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           _status = 'DRY';
           break;
       }
-      _suggestions = HUMIDITY_SUGGESTIONS[_status]?['videos'] as List<Video>? ?? [];
+      _suggestions = humiditySuggestions[_status]?['videos'] as List<Video>? ?? [];
     } else {
       switch (_id) {
         case 6:
@@ -79,7 +79,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
           _status = 'FREEZING';
           break;
       }
-      _suggestions = TEMPERATURE_SUGGESTIONS[_status]?['videos'] as List<Video>? ?? [];
+      _suggestions = temperatureSuggestions[_status]?['videos'] as List<Video>? ?? [];
     }
     setState(() {});
   }
@@ -92,6 +92,7 @@ class _RecommendedActionsPageState extends State<RecommendedActionsPage> {
   Future<void> _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No se pudo abrir el video: $url')),
       );

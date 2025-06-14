@@ -261,8 +261,8 @@ class _CropDetailPageState extends State<CropDetailPage> {
       );
     }
 
-    final humidityStatusDetails = HUMIDITY_SUGGESTIONS[_humidity.status];
-    final temperatureStatusDetails = TEMPERATURE_SUGGESTIONS[_temperature.status];
+    final humidityStatusDetails = humiditySuggestions[_humidity.status];
+    final temperatureStatusDetails = temperatureSuggestions[_temperature.status];
 
     Color humidityStatusColor = Colors.green;
     bool humidityShowButton = true; // Assume true initially
