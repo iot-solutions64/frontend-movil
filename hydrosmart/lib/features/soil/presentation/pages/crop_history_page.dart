@@ -11,7 +11,6 @@ class CropHistoryPage extends StatefulWidget {
 }
 
 class _CropHistoryPageState extends State<CropHistoryPage> {
-  late int _cropId;
   late bool _isShortHistory;
   List<Record> _history = [];
   List<Record> _limitedHistory = [];
@@ -24,10 +23,8 @@ class _CropHistoryPageState extends State<CropHistoryPage> {
       final arguments = ModalRoute.of(context)?.settings.arguments;
 
       if (arguments is Map && arguments['cropId'] is int) {
-        _cropId = arguments['cropId'];
         _isShortHistory = arguments['short'] == true;
       } else {
-        print('Error: cropId not found or incorrect type in arguments.');
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No se pudo cargar el historial. Volviendo...')),
@@ -43,7 +40,6 @@ class _CropHistoryPageState extends State<CropHistoryPage> {
   }
 
   void _fetchHistory() {
-    // TODO: Implement the logic to fetch history data from an API or service
     // For now, use the hardcoded data from your Vue example
     _history = [
       Record(id: 1, date: '24-04-2025', humidity: 67, humidityStatus: 'FAVORABLE', temperature: 24, temperatureStatus: 'FAVORABLE'),

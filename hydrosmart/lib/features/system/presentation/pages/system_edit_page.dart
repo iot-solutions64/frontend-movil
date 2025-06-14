@@ -236,7 +236,7 @@ class _SystemEditPageState extends State<SystemEditPage> {
                             ),
                           ],
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 ),

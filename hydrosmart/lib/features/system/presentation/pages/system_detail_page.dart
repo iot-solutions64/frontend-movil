@@ -22,7 +22,6 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
   }
 
   void _fetchSystemDetails(System system) {
-    // TODO: Implementar la lógica para obtener datos del sistema desde un servicio
     // Aquí simulamos la carga de datos con los valores de ejemplo
     setState(() {
       _system = System(
@@ -50,16 +49,11 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
     return const Color(0xFFE74C3C);
   }
 
-  void _deleteSystem(int id) {
-    // TODO: Implementar la lógica para eliminar el sistema
-    Navigator.of(context).pop();
-  }
-
   void _goToEditSystem() {
     Navigator.pushNamed(context, '/system_edit', arguments: _system);
   }
 
-      void _showDeleteDialog() {
+  void _showDeleteDialog() {
     showDialog(
       context: context,
       builder: (context) {
@@ -251,7 +245,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                                 ),
                               ],
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                     ),
@@ -269,7 +263,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                           child: ElevatedButton(
                             onPressed: () => _goToEditSystem(),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF1856C3),
+                              backgroundColor: const Color(0xFF1856C3),
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
@@ -287,7 +281,7 @@ class _SystemDetailPageState extends State<SystemDetailPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),

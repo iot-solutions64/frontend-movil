@@ -32,7 +32,7 @@ class TankCard extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Color(0xFF1856C3).withOpacity(0.3),
+                    color: const Color(0xFF1856C3).withOpacity(0.3),
                     shape: BoxShape.circle,
                   ),
                   child: const Center(

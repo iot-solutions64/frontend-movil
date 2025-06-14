@@ -87,7 +87,7 @@ class _TanksPageState extends State<TanksPage> {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese la capacidad';
                     }
-                    if (double.tryParse(value) == null || double.parse(value!) <= 0) {
+                    if (double.tryParse(value) == null || double.parse(value) <= 0) {
                       return 'Ingrese un número válido y positivo';
                     }
                     return null;
@@ -357,8 +357,8 @@ class _TanksPageState extends State<TanksPage> {
         backgroundColor: const Color(0xFF092C4C),
         onPressed: _showAddTankDialog,
         tooltip: 'Añadir',
-        child: const Icon(Icons.add, color: Colors.white),
         shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

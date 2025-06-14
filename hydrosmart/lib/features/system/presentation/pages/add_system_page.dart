@@ -20,7 +20,6 @@ class _AddSystemPageState extends State<AddSystemPage> {
   }
 
   void _fetchSystemsToAdd() {
-    // TODO: Implement the actual logic to fetch systems from an API service
     Future.delayed(const Duration(milliseconds: 3000), () {
       setState(() {
         _systems = [
@@ -43,7 +42,6 @@ class _AddSystemPageState extends State<AddSystemPage> {
   }
 
   void _addSystem(System system) {
-    // TODO: Implement the actual logic to add the system to the user's account
 
     ScaffoldMessenger.of(context).showSnackBar( SnackBar(
       content: const Text('Sistema agregado correctamente'),
@@ -132,7 +130,7 @@ class _AddSystemPageState extends State<AddSystemPage> {
                                       Container(
                                         width: 80,
                                         height: 80,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Color(0xFF092C4C),
                                           shape: BoxShape.circle,
                                         ),

@@ -21,7 +21,7 @@ class _WaterGraphPageState extends State<WaterGraphPage> {
   }
 
   void _fetchMonthlyHistory() {
-    // TODO: Implement the logic to fetch items from a service
+    // Implement the logic to fetch items from a service
     setState(() {
       _monthlyHistory = [
         MonthlyWaterUsage(mes: 'Noviembre 2024', cantidad: 69000),

@@ -6,7 +6,7 @@ import 'package:hydrosmart/features/security/presentation/bloc/register_event.da
 import 'package:hydrosmart/features/security/presentation/bloc/register_state.dart';
 
 class SignupPage extends StatefulWidget {
-  SignupPage({super.key});
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();

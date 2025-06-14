@@ -142,7 +142,7 @@ class _IrrigationPageState extends State<IrrigationPage> {
                                       width: 80,
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFF1856C3).withOpacity(0.3),
+                                        color: const Color(0xFF1856C3).withOpacity(0.3),
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Center(
@@ -203,7 +203,7 @@ class _IrrigationPageState extends State<IrrigationPage> {
                         child: ElevatedButton(
                           onPressed: _goToTanks,
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Color(0xFF1856C3),
+                            foregroundColor: const Color(0xFF1856C3),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),

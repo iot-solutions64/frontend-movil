@@ -219,10 +219,10 @@ class _SoilPageState extends State<SoilPage> {
                 if (currentStep == 0)
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancelar'),
                     style: TextButton.styleFrom(
                       foregroundColor: const Color(0xB41856C3),
                     ),
+                    child: const Text('Cancelar'),
                   ),
                 if (currentStep > 0)
                   TextButton(
@@ -231,10 +231,10 @@ class _SoilPageState extends State<SoilPage> {
                         currentStep--;
                       });
                     },
-                    child: const Text('Anterior'),
                     style: TextButton.styleFrom(
                       foregroundColor: const Color(0xB41856C3),
                     ),
+                    child: const Text('Anterior'),
                   ),
                 if (currentStep < steps.length - 1)
                   ElevatedButton(
@@ -380,10 +380,8 @@ class _SoilPageState extends State<SoilPage> {
                       final humRange = humidityOptions[selectedHumidity]!;
                       crop.temperatureMinThreshold = tempRange[0];
                       crop.temperatureMaxThreshold = tempRange[1];
-                      crop.temperature = tempRange[0] + 1; // Placeholder for temperature, adjust as needed
                       crop.humidityMinThreshold = humRange[0];
                       crop.humidityMaxThreshold = humRange[1];
-                      crop.humidity = humRange[0] + 1; // Placeholder for humidity, adjust as needed
                       _editCrop(crop);
                       Navigator.pop(context);
                     });
@@ -549,8 +547,8 @@ class _SoilPageState extends State<SoilPage> {
         backgroundColor: const Color(0xFF092C4C),
         onPressed: _showAddDialog,
         tooltip: 'Añadir',
-        child: const Icon(Icons.add, color: Colors.white),
         shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
