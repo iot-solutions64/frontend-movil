@@ -5,12 +5,19 @@ import 'package:hydrosmart/features/security/presentation/bloc/login_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_event.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_state.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +27,13 @@ class LoginPage extends StatelessWidget {
           if (state is LoginSuccess) {
             Navigator.pushNamed(context, '/home');
           } else if (state is LoginError) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Credenciales incorrectas'),
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Credenciales incorrectas'),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              margin: const EdgeInsets.all(16),
             ));
           }
         },
@@ -60,12 +71,26 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                    label: const Text('Contraseña'),
-                    prefixIcon: const Icon(Icons.key),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16))),
+                  label: const Text('Contraseña'),
+                  prefixIcon: const Icon(Icons.key),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)
+                ),
+                suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  )
+                ),
+                        
               ),
             ),
             Padding(
@@ -73,13 +98,17 @@ class LoginPage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {
-                      final String username = _usernameController.text;
-                      final String password = _passwordController.text;
-                      context.read<LoginBloc>().add(LoginSubmitted(
-                          username: username, password: password));
-                    },
-                    child: const Text('Acceder')),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1856C3), // Color de fondo del botón
+                    foregroundColor: Colors.white, // Color del texto
+                  ),
+                  onPressed: () {
+                    final String username = _usernameController.text;
+                    final String password = _passwordController.text;
+                    context.read<LoginBloc>().add(LoginSubmitted(
+                        username: username, password: password));
+                  },
+                  child: const Text('Acceder')),
               ),
             ),
             GestureDetector(

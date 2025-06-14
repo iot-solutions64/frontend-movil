@@ -13,9 +13,9 @@ class SecurityRepository {
     Resource<UserDto> result = await SecurityService().login(username, password);
 
     if (result is Success) {
-      GlobalVariables.userId = result.data!.userId;
+      GlobalVariables.userId = result.data!.id;
       GlobalVariables.token = result.data!.token;
-      insertUser(result.data!.userId, result.data!.username, result.data!.token);
+      insertUser(result.data!.id, result.data!.username, result.data!.token);
       return Success(result.data!.toUser());
     } else {
       return Error(result.message!);

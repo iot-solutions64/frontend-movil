@@ -1,19 +1,19 @@
 import 'package:hydrosmart/features/security/domain/user.dart';
 
 class UserDto {
-  final int userId;
+  final int id;
   final String username;
   final String token;
 
   const UserDto({
-    required this.userId,
+    required this.id,
     required this.username,
     required this.token,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {
     return UserDto(
-      userId: json['userId'] ?? 0,
+      id: json['id'] ?? 0,
       username: json['username'] ?? '',
       token: json['token'] ?? '',
     );
@@ -21,7 +21,7 @@ class UserDto {
 
   User toUser(){
     return User(
-      id: userId,
+      id: id,
       username: username
     );
   }
