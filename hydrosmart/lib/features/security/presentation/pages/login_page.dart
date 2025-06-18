@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrosmart/core/app_constants.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_event.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/login_state.dart';
@@ -43,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                  AppConstants.logo,
+              child: Image.asset(
+                  'assets/images/logo.png',
                   height: 200,
                   fit: BoxFit.cover,
                 ),

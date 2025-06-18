@@ -6,7 +6,4 @@ class AppConstants {
   static const String waterTankEndpoint = '/water-tanks';
   static const String cropEndpoint = '/crop';
 
-
-  static const String logo = 'https://i.postimg.cc/V6rkqJZd/hydrosmart-logo-transparent.png';
-
 }
