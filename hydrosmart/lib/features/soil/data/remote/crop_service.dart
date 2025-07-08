@@ -36,7 +36,7 @@ class CropService {
     try {
       http.Response response = await http.get(
         Uri.parse(
-          '${AppConstants.baseUrl}${AppConstants.cropEndpoint}/$userId'),
+          '${AppConstants.baseUrl}${AppConstants.cropEndpoint}/user/$userId/reference'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${GlobalVariables.token}'
