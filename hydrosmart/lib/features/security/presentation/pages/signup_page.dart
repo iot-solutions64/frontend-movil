@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrosmart/core/app_constants.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/register_bloc.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/register_event.dart';
 import 'package:hydrosmart/features/security/presentation/bloc/register_state.dart';
@@ -55,8 +54,8 @@ class _SignupPageState extends State<SignupPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                AppConstants.logo,
+              child: Image.asset(
+                'assets/images/logo.png',
                 height: 200,
                 fit: BoxFit.cover,
               ),
